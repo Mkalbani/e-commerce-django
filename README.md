@@ -31,7 +31,7 @@ This is a simple e-commerce web application built using Django. It allows users 
 1. Clone this repository:
 
    ```bash
-   git clone https://github.com/yourusername/ecommerce-app.git
+   git clone https://github.com/mkothm/ecommerce-app.git
    cd ecommerce-app
 
 
