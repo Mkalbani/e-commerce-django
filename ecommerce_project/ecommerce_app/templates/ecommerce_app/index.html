@@ -45,7 +45,7 @@
                     {% endif %}
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/checkout/">Cart</a>
+                    <a class="nav-link" href="/cart/">Cart</a>
                 </li>
                 <!-- Add the Register link below -->
                 {% if not user.is_authenticated %}
@@ -89,8 +89,38 @@
                         <h5 class="card-title">{{ product.name }}</h5>
                         <p class="card-text">{{ product.description }}</p>
                         <p class="card-text">${{ product.price }}</p>
-                        <button class="btn btn-primary futuristic-btn" onclick="addToCart({{ product.id }})">Add to Cart</button>
-                    </div>
+                        <form action="{% url 'add_to_cart' %}" method="post" id="add-to-cart-form">
+                            {% csrf_token %}
+                            <input type="hidden" name="product_id" value="{{ product.id }}">
+                            <button type="submit" class="btn btn-primary futuristic-btn">Add to Cart</button>
+                        </form>
+                        
+                        <script>
+                            $(document).ready(function() {
+                                $('#add-to-cart-form').submit(function(event) {
+                                    event.preventDefault();
+                        
+                                    // Get the product ID from the form.
+                                    var productId = $('#add-to-cart-form input[name="product_id"]').val();
+                        
+                                    // Make an AJAX request to the cart URL endpoint.
+                                    $.ajax({
+                                        url: '/cart/',
+                                        type: 'POST',
+                                        data: {
+                                            product_id: productId
+                                        },
+                                        success: function() {
+                                            // The product has been added to the cart.
+                                            // Update the cart icon to show the new number of items in the cart.
+                                            // ...
+                                        }
+                                    });
+                                });
+                            });
+                        </script>
+                        
+                                            </div>
                 </div>
             </div>
             {% endfor %}

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <!-- Add Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Add your custom CSS styles here -->
+    <link rel="stylesheet" href="custom.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Add futuristic CSS styles -->
+    <style>
+        /* Style for product cards */
+        .futuristic-card {
+            background-color: #f8f8f8; /* Slight grey background */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* Shadow effect */
+            transition: transform 0.2s; /* Smooth transition for hover effect */
+        }
+
+        /* Hover effect for product cards */
+        .futuristic-card:hover {
+            transform: scale(1.05); /* Enlarge on hover */
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="/">E-commerce Store</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <!-- Navigation links -->
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    {% if user.is_authenticated %}
+                    <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+                    {% else %}
+                    <a class="nav-link" href="{% url 'login' %}">Log In</a>
+                    {% endif %}
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/checkout/">Cart</a>
+                </li>
+                <!-- Add the Register link below -->
+                {% if not user.is_authenticated %}
+                <a class="nav-link" href="/register/">Register</a>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col">
+                <h1>Your Shopping Cart</h1>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Total</th>
+                            <th>Action</th> <!-- Added Action column -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in cart %}
+                            <tr>
+                                <td>{{ item.product.name }}</td>
+                                <td>{{ item.quantity }}</td>
+                                <td>{{ item.product.price }}</td>
+                                <td>{{ item.total_price }}</td>
+                                <td><a href="/remove_from_cart/{{ item.id }}/" class="btn btn-danger">Remove</a></td> <!-- Moved this column here -->
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <a href="/checkout/" class="btn btn-primary">Checkout</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Bootstrap JS and jQuery (at the end for better performance) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
